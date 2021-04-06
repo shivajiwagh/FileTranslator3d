@@ -18,5 +18,6 @@ namespace FileTranslator3d.Models
         public string OutPutFileName { get; set; }
         public double Area { get; set; }
         public double Volume { get; set; }
+        public string RotationAxis { get; set; }
     }
 }

@@ -7,4 +7,11 @@
         STLASCII,
         IGES //Just for resprentation
     }
+
+    public enum RotationAxis
+    {
+        X,
+        Y,
+        Z
+    }
 }

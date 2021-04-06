@@ -18,6 +18,8 @@ namespace FileTranslator3d.Web.Services
 
         Task<HttpResponseMessage> DownloadFile(string filepath);
 
+        Task<TransformationModel> Transform(TransformationModel transformation);
+
         string GetDownloadUrl(string filename);
     }
 }

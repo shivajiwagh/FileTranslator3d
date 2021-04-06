@@ -41,6 +41,11 @@ namespace FileTranslator3d.Web.Services
             return await _httpClient.GetAsync($"downloadfile/?filename={filepath}");
         }
 
+        public async Task<TransformationModel> Transform(TransformationModel transformation)
+        {
+            return await _httpClient.PostJsonAsync<TransformationModel>("transform", transformation);
+        }
+
         public string GetDownloadUrl(string filename)
         {
             return _httpClient.BaseAddress.ToString() + "downloadfile/?filename=" + filename;

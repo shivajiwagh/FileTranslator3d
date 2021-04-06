@@ -51,13 +51,6 @@ namespace FileTranslator3d.FileProcessing.FileStructure
                 triangle.Points.Add(Vertices[face.VertexIndices[1] - 1]);
                 triangle.Points.Add(Vertices[face.VertexIndices[2] - 1]);
 
-                //Vector3 p1 = Vertices[face.VertexIndices[0] - 1];
-                //Vector3 p2 = Vertices[face.VertexIndices[1] - 1];
-                //Vector3 p3 = Vertices[face.VertexIndices[2] - 1];
-                //triangle.Points.Add(p1);
-                //triangle.Points.Add(p2);
-                //triangle.Points.Add(p3);
-                //triangle.AddNormal(p1, p2, p3);
                 ////Normal
                 if (face.NormalIndices.Count == 3)
                 {

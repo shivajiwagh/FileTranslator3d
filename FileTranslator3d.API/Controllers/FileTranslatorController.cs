@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FileTranslator3d.Models;
+using FileTranslator3d.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing.Constraints;
 
@@ -28,7 +29,7 @@ namespace FileTranslator3d.API.Controllers
         #region Fields
 
         private readonly ILogger<FileTranslatorController> _logger;
-        private readonly IFileTranslator3d _fileTranslator;
+        private readonly IFileTranslatorFacade _fileTranslator;
         private readonly IWebHostEnvironment _environment;
         public FileArgumentOptions FileDetails { get; private set; }
 
@@ -36,7 +37,7 @@ namespace FileTranslator3d.API.Controllers
 
         #region Constructor
 
-        public FileTranslatorController(ILogger<FileTranslatorController> logger, IFileTranslator3d fileTranslator,
+        public FileTranslatorController(ILogger<FileTranslatorController> logger, IFileTranslatorFacade fileTranslator,
             IWebHostEnvironment environment)
         {
             _logger = logger;
@@ -102,11 +103,24 @@ namespace FileTranslator3d.API.Controllers
                 if (args != null)
                 {
                     await Task.Run(() =>
-                        _fileTranslator.TranslateFile(args.InputFileName, args.InputFileType, 
-                            args.OutPutFileName, args.OutPutFileType));
-
+                        _fileTranslator.ReadFile(args.InputFileName, args.InputFileType));
                     await Task.Run(() => area = _fileTranslator.GetSurfaceArea());
                     await Task.Run(() => volume = _fileTranslator.GetSurfaceVolume());
+                    
+                    Enum.TryParse(transformation.RotationAxis, out RotationAxis axis);
+
+                    await Task.Run(() => _fileTranslator.Scale(transformation.Scale));
+
+                    await Task.Run(() => _fileTranslator.Rotate(axis, transformation.Rotation));
+
+                    await Task.Run(() => _fileTranslator.AddOrigin());
+
+                    await Task.Run(() =>
+                        _fileTranslator.Translate(transformation.OriginX, transformation.OriginY,
+                            transformation.OriginZ));
+
+                    await Task.Run(() => _fileTranslator.WriteFile(args.OutPutFileName, args.OutPutFileType));
+
                     outputFile = args.OutPutFileName;
                 }
             }
@@ -115,6 +129,24 @@ namespace FileTranslator3d.API.Controllers
                 return NotFound(new TransformationModel() { Status = false});
             }
             return Ok(new TransformationModel() { Status= true, OutPutFileName = outputFile, Area = area, Volume = volume});
+        }
+
+        [HttpPost]
+        [Route("transform")]
+        public async Task<ActionResult<TransformationModel>> Transform(TransformationModel transformation)
+        {
+            try
+            {
+                await Task.Run(() =>
+                    _fileTranslator.Translate(transformation.OriginX, transformation.OriginY, transformation.OriginZ));
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new TransformationModel() {Status = false});
+            }
+
+            return Ok(new TransformationModel() { Status = true});
         }
 
         private FileArgumentOptions GetTranslationFileDetails(TransformationModel transformation)

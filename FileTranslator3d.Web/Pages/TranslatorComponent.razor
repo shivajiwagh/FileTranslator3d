@@ -35,6 +35,12 @@
                     <div class="col-md-2">
                         <label>Rotate</label>
                         <input type="number" @bind="_rotation" class="form-control" required>
+                        <select class="custom-select" @bind="_rotationAxis" aria-label="Default select example">
+                            <option selected>x</option>
+                            <option value="1">x</option>
+                            <option value="2">y</option>
+                            <option value="3">z</option>
+                        </select>
                     </div>
                     <div class="col-md-4">
                         <label>Transform</label>
@@ -133,6 +139,7 @@
     bool _status = false;
 
     string _fileName;
+    string _fileFullName;
     string _targetFileName;
     string _targetFullFileName;
     double _surfaceArea;
@@ -144,6 +151,8 @@
     string _translateButtonText = "Translate";
     bool _translateStartStatus = false;
     string _downloadFileUrl = "";
+    string _rotationAxis = "x";
+    bool _fileUploadSuccess = false;
 
     float _originX = 0;
     float _originY = 0;
@@ -151,49 +160,65 @@
     float _pointX = 0;
     float _pointY = 0;
     float _pointZ = 0;
-    float _scale = 0;
+    float _scale = 1;
     float _rotation = 0;
     string _outputFileType = "stl";
 
     async void OnStartTranslate()
     {
+        _status = false;
         _translateStartStatus = true;
         _translateButtonText = "Converting to " + _outputFileType;
-        var ms = new MemoryStream();
-        await _selectedFile.Data.CopyToAsync(ms);
 
-        var content = new MultipartFormDataContent {
-            { new ByteArrayContent(ms.GetBuffer()), "\"upload\"", _selectedFile.Name }
-        };
-
-        var response = await TranslatorApiService.UploadFile(content);
-        if (response.IsSuccessStatusCode)
+        if (_fileUploadSuccess == false)
         {
-            var json = await response.Content.ReadAsStringAsync();
-            var argsOptions = JsonConvert.DeserializeObject<FileArgumentOptions>(json);
+            var ms = new MemoryStream();
+            await _selectedFile.Data.CopyToAsync(ms);
 
-            var translateResult = await TranslatorApiService.TranslateFile(new TransformationModel()
+            var content = new MultipartFormDataContent {
+                { new ByteArrayContent(ms.GetBuffer()), "\"upload\"", _selectedFile.Name }
+            };
+
+            var response = await TranslatorApiService.UploadFile(content);
+            if (response.IsSuccessStatusCode)
             {
-                Scale = _scale,
-                Rotation = _rotation,
-                OriginX = _originX,
-                OriginY = _originY,
-                OriginZ = _originZ,
-                OutPutFileType = _outputFileType,
-                InputFilePath = argsOptions.InputFileName
-            });
-            if (translateResult.Status)
-            {
-                _translateButtonText = "Translate";
-                _translateStartStatus = false;
-                _targetFullFileName = translateResult.OutPutFileName;
-                _targetFileName = Path.GetFileName(translateResult.OutPutFileName);
-                _surfaceArea = translateResult.Area;
-                _surfaceVolume = translateResult.Volume;
-                _status = true;
-                _downloadFileUrl = TranslatorApiService.GetDownloadUrl(_targetFullFileName);
-                StateHasChanged();
+                _fileUploadSuccess = true;
+                var json = await response.Content.ReadAsStringAsync();
+                var argsOptions = JsonConvert.DeserializeObject<FileArgumentOptions>(json);
+                _fileFullName = argsOptions.InputFileName;
+                await RunTranslation(argsOptions.InputFileName);
             }
+        }
+        else
+        {
+            await RunTranslation(_fileFullName);
+        }
+    }
+
+    private async Task RunTranslation(string filename)
+    {
+        var translateResult = await TranslatorApiService.TranslateFile(new TransformationModel()
+        {
+            Scale = _scale,
+            Rotation = _rotation,
+            OriginX = _originX,
+            OriginY = _originY,
+            OriginZ = _originZ,
+            OutPutFileType = _outputFileType,
+            InputFilePath = filename,
+            RotationAxis = _rotationAxis
+        });
+        if (translateResult.Status)
+        {
+            _translateButtonText = "Translate";
+            _translateStartStatus = false;
+            _targetFullFileName = translateResult.OutPutFileName;
+            _targetFileName = Path.GetFileName(translateResult.OutPutFileName);
+            _surfaceArea = translateResult.Area;
+            _surfaceVolume = translateResult.Volume;
+            _status = true;
+            _downloadFileUrl = TranslatorApiService.GetDownloadUrl(_targetFullFileName);
+            StateHasChanged();
         }
     }
 
@@ -216,18 +241,7 @@
         {
             _fileName = _selectedFile.Name;
             _selectedFileString = _fileName;
+            _status = false;
         }
     }
-
-    async void OnDownloadFile()
-    {
-        var response = await TranslatorApiService.DownloadFile(_targetFullFileName);
-
-        //byte[] file = response.Content;
-
-        //await JsRuntime.InvokeVoidAsync("BlazorDownloadFile", "file.bin", "application/octet-stream", file);
-
-    }
-
-
 }

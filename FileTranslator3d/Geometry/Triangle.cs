@@ -29,6 +29,16 @@ namespace FileTranslator3d.Geometry
             Points = new List<Vector3>();
         }
 
+        public bool Translate(Vector3 fromPoint, Vector3 toPoint)
+        {
+            Vector3 resultant = fromPoint - toPoint;
+            for (int i = 0; i < Points.Count; i++)
+            {
+                Points[i] = Points[i] + resultant;
+            }
+            return true;
+        }
+
         public double GetArea()
         {
             //https://byjus.com/maths/area-triangle-coordinate-geometry/
