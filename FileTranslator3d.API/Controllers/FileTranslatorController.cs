@@ -113,11 +113,11 @@ namespace FileTranslator3d.API.Controllers
 
                     await Task.Run(() => _fileTranslator.Rotate(axis, transformation.Rotation));
 
-                    await Task.Run(() => _fileTranslator.AddOrigin());
-
                     await Task.Run(() =>
                         _fileTranslator.Translate(transformation.OriginX, transformation.OriginY,
                             transformation.OriginZ));
+
+                    await Task.Run(() => _fileTranslator.AddOrigin());
 
                     await Task.Run(() => _fileTranslator.WriteFile(args.OutPutFileName, args.OutPutFileType));
 
