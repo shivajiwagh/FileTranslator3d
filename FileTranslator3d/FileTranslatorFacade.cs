@@ -55,6 +55,11 @@ namespace FileTranslator3d
             return _geometry.Scale(factor);
         }
 
+        public bool IsPointInside(Vector3 point)
+        {
+            return _geometry.IsPointInside(point);
+        }
+
         public void AddOrigin()
         {
             _geometry.AddOrigin();

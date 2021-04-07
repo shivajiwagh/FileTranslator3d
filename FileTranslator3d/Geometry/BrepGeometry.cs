@@ -140,7 +140,13 @@ namespace FileTranslator3d.Geometry
 
         public bool IsPointInside(Vector3 point)
         {
-            throw new System.NotImplementedException();
+            foreach (Triangle triangle in this.Triangles)
+            {
+                Plane plane = new Plane(triangle);
+                double dist = point * plane;
+                if (dist > 0) return false;
+            }
+            return true;
         }
     }
 }

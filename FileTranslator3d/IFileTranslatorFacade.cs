@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using FileTranslator3d.Utility;
 
@@ -20,6 +21,8 @@ namespace FileTranslator3d
         bool Rotate(RotationAxis axis, double angle);
 
         bool Scale(float sf);
+
+        bool IsPointInside(Vector3 point);
 
         void AddOrigin();
     }

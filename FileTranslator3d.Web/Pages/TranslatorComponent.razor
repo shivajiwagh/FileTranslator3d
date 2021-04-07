@@ -108,11 +108,11 @@
                 </div>
                 <input type="number" @bind="_pointZ" class="form-control" required>
                 <button class="btn btn-primary" type="button" @onclick="OnCheckPoint" style="margin-left: 5rem">
-                    @if (_pointCheckStatus == true)
+                    @if (_pointCheckApiStatus == true)
                     {
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     }
-                    @_pointStatusString
+                    @_pointCheckStatusButtonText
                 </button>
             </div>
         </div>
@@ -120,11 +120,12 @@
         @if (_pointCheckStatus)
         {
             <div class="col-6">
-                <div class="alert alert-success" role="alert">
+                <div class="alert @(_pointInside? "alert-success" : "alert-warning")" role="alert">
                     <p class="lead">Point is @_pointStatusString</p>
                 </div>
             </div>
         }
+
     </div>
 }
 
@@ -143,7 +144,9 @@
     double _surfaceArea;
     double _surfaceVolume;
     bool _pointCheckStatus;
-    string _pointStatusString = "Submit";
+    bool _pointCheckApiStatus;
+    string _pointCheckStatusButtonText = "Submit";
+    string _pointStatusString;
     IFileListEntry _selectedFile;
     string _selectedFileString = DefaultFilename;
     string _translateButtonText = "Translate";
@@ -151,6 +154,7 @@
     string _downloadFileUrl = "";
     string _rotationAxis = "x";
     bool _fileUploadSuccess = false;
+    bool _pointInside = false;
 
     float _originX = 0;
     float _originY = 0;
@@ -220,10 +224,30 @@
         }
     }
 
-    private void OnCheckPoint()
+    async void OnCheckPoint()
     {
-        _pointCheckStatus = true;
-        _pointStatusString = "Outside";
+        _pointCheckStatusButtonText = "Checking...";
+        _pointCheckApiStatus = true;
+        var result = await TranslatorApiService.IsPointInside(new PointStateModel() { X = _pointX, Y = _pointY, Z = _pointZ });
+        if (result != null)
+        {
+            PointStateModel state = result.Value;
+            if (state.Inside)
+            {
+                _pointCheckStatus = true;
+                _pointInside = true;
+                _pointStatusString = "inside";
+            }
+            else
+            {
+                _pointCheckStatus = true;
+                _pointInside = false;
+                _pointStatusString = "outside";
+            }
+            _pointCheckStatusButtonText = "Submit";
+            _pointCheckApiStatus = false;
+            StateHasChanged();
+        }
     }
 
     /// <summary>

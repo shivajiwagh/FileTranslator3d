@@ -30,7 +30,7 @@ namespace FileTranslator3d.API
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
-            services.AddScoped<IFileTranslatorFacade, FileTranslatorFacade>();
+            services.AddSingleton<IFileTranslatorFacade, FileTranslatorFacade>();
 
             services.AddControllers();
         }

@@ -20,6 +20,8 @@ namespace FileTranslator3d.Web.Services
 
         Task<TransformationModel> Transform(TransformationModel transformation);
 
+        Task<ActionResult<PointStateModel>> IsPointInside(PointStateModel point);
+
         string GetDownloadUrl(string filename);
     }
 }

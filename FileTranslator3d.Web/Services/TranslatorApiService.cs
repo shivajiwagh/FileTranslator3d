@@ -46,6 +46,11 @@ namespace FileTranslator3d.Web.Services
             return await _httpClient.PostJsonAsync<TransformationModel>("transform", transformation);
         }
 
+        public async Task<ActionResult<PointStateModel>> IsPointInside(PointStateModel point)
+        {
+            return await _httpClient.PostJsonAsync<PointStateModel>("ispointinside", point);
+        }
+
         public string GetDownloadUrl(string filename)
         {
             return _httpClient.BaseAddress.ToString() + "downloadfile/?filename=" + filename;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -117,7 +118,7 @@ namespace FileTranslator3d.API.Controllers
                         _fileTranslator.Translate(transformation.OriginX, transformation.OriginY,
                             transformation.OriginZ));
 
-                    await Task.Run(() => _fileTranslator.AddOrigin());
+                    //await Task.Run(() => _fileTranslator.AddOrigin());
 
                     await Task.Run(() => _fileTranslator.WriteFile(args.OutPutFileName, args.OutPutFileType));
 
@@ -129,6 +130,22 @@ namespace FileTranslator3d.API.Controllers
                 return NotFound(new TransformationModel() { Status = false});
             }
             return Ok(new TransformationModel() { Status= true, OutPutFileName = outputFile, Area = area, Volume = volume});
+        }
+
+        [HttpPost]
+        [Route("ispointinside")]
+        public async Task<ActionResult<PointStateModel>> IsPointInside(PointStateModel point)
+        {
+            bool state = false;
+            try
+            {
+                state = await Task.Run(() => _fileTranslator.IsPointInside(new Vector3(point.X, point.Y, point.Z)));
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new PointStateModel() { Inside = false });
+            }
+            return Ok(new PointStateModel() { Inside = state });
         }
 
         [HttpPost]
