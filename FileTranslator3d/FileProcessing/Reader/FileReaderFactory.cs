@@ -1,21 +1,33 @@
-﻿using FileTranslator3d.Utility;
-using System;
+﻿using System;
+using FileTranslator3d.Utility;
 
 namespace FileTranslator3d.FileProcessing.Reader
 {
+    /// <summary>
+    /// FileReaderFactory - returns the appropriate class for reading 3d file.
+    /// </summary>
     public class FileReaderFactory : IFileReaderFactory
     {
-        public IFileReader GetFileReader(FileType filetype)
+        #region Interface Implementations
+
+        /// <summary>
+        /// Returns the appropriate reader instance
+        /// </summary>
+        /// <param name="fileType"></param>
+        /// <returns></returns>
+        public IFileReader GetFileReader(FileType fileType)
         {
-            switch (filetype)
+            switch (fileType)
             {
                 case FileType.OBJ:
                     return new ObjReader();
                 case FileType.STLBINARY:
                     return new StlReader();
                 default:
-                    throw new ApplicationException(string.Format("'{0}' reader cannot be created", filetype.ToString())); //TODO: need to modify based on requirement
+                    throw new ApplicationException($"'{fileType.ToString()}' reader cannot be created"); 
             }
         }
+
+        #endregion
     }
 }

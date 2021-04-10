@@ -1,0 +1,660 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileTranslator3d</name>
+    </assembly>
+    <members>
+        <member name="T:FileTranslator3d.FileProcessing.FileStructure.IFileModel">
+            <summary>
+            For inheritance purpose only
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.FileStructure.IFileModel.GetGeometryModel">
+            <summary>
+            Returns the generic geometry model structure so that it can be reused across all formats
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel">
+            <summary>
+            Concrete implementation of IFileModel
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Vertices">
+            <summary>
+            Holds the vertices - Vector3 class represents a point
+            v element in Obj file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Faces">
+            <summary>
+            f element - face in obj file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Normals">
+            <summary>
+            vn element - represents all normals
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Textures">
+            <summary>
+            vt element - holds texture coordinates
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.GetGeometryModel">
+            <summary>
+            Returns the generic geometry model
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.IFileReader">
+            <summary>
+            Interface represents the reader generic implementation
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.IFileReader.ReadFile(System.String)">
+            <summary>
+            Function to read the input file
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.IFileReaderFactory">
+            <summary>
+            Reader factory which returns the appropriate reader
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.IFileReaderFactory.GetFileReader(FileTranslator3d.Utility.FileType)">
+            <summary>
+            Method returns the appropriate reader based on file extension
+            </summary>
+            <param name="fileType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.IFileWriter">
+            <summary>
+            IFileWriter interface for generic writer
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.IFileWriter.Header">
+            <summary>
+            File header string
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.IFileWriter.Write(FileTranslator3d.Geometry.IPrimitive,System.String)">
+            <summary>
+            Method to override 
+            </summary>
+            <param name="primitive"></param>
+            <param name="filepath"></param>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.IFileWriterFactory">
+            <summary>
+            Writer factory
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.IFileWriterFactory.GetFileWriter(FileTranslator3d.Utility.FileType)">
+            <summary>
+            Returns the writer based on file extension
+            </summary>
+            <param name="fileType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Reader.FileReaderFactory">
+            <summary>
+            FileReaderFactory - returns the appropriate class for reading 3d file.
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Reader.FileReaderFactory.GetFileReader(FileTranslator3d.Utility.FileType)">
+            <summary>
+            Returns the appropriate reader instance
+            </summary>
+            <param name="fileType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Reader.ObjReader">
+            <summary>
+            Concrete implementation of the reader
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Reader.ObjReader.ReadFile(System.String)">
+            <summary>
+            Reads the specified obj file and return geometry model
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Reader.StlReader">
+            <summary>
+            TODO - Implement concrete stl reader
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Reader.StlReader.ReadFile(System.String)">
+            <summary>
+            TODO - read the stl file and return geometry model
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Writer.FileWriterFactory">
+            <summary>
+            Factory for getting the appropriate writer 
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Writer.FileWriterFactory.GetFileWriter(FileTranslator3d.Utility.FileType)">
+            <summary>
+            Returns the appropriate writer instance
+            </summary>
+            <param name="fileType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Writer.ObjWriter">
+            <summary>
+            TODO - Implement concrete obj writer
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.Writer.ObjWriter.Header">
+            <summary>
+            Obj hear string
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Writer.ObjWriter.Write(FileTranslator3d.Geometry.IPrimitive,System.String)">
+            <summary>
+            TODO - Add the obj writer implementation
+            </summary>
+            <param name="primitive"></param>
+            <param name="filepath"></param>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Writer.StlAsciiWriter">
+            <summary>
+            TODO - Stl ASCII writer
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.Writer.StlAsciiWriter.Header">
+            <summary>
+            stl header
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Writer.StlAsciiWriter.Write(FileTranslator3d.Geometry.IPrimitive,System.String)">
+            <summary>
+            TODO - implement the ascii writer
+            </summary>
+            <param name="primitive"></param>
+            <param name="filepath"></param>
+        </member>
+        <member name="T:FileTranslator3d.FileProcessing.Writer.StlBinaryWriter">
+            <summary>
+            Writes the stl in binary format
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.FileProcessing.Writer.StlBinaryWriter.Header">
+            <summary>
+            Header of the stl file
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileProcessing.Writer.StlBinaryWriter.Write(FileTranslator3d.Geometry.IPrimitive,System.String)">
+            <summary>
+             Writer the stl file in binary format
+            </summary>
+            <param name="primitive"></param>
+            <param name="filepath"></param>
+        </member>
+        <member name="T:FileTranslator3d.FileTranslatorFacade">
+            <summary>
+            Single class represents the entire file conversion functionality
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.ReadFile(System.String,System.String)">
+            <summary>
+            Reads the given file
+            </summary>
+            <param name="inputFile"></param>
+            <param name="inputFormat"></param>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.WriteFile(System.String,System.String)">
+            <summary>
+            Writes the output file
+            </summary>
+            <param name="outputFile"></param>
+            <param name="outputFormat"></param>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.GetSurfaceArea">
+            <summary>
+            Returns the surface area for the entire geometry
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.GetSurfaceVolume">
+            <summary>
+            Returns the surface volume for the entire geometry
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.Translate(System.Single,System.Single,System.Single)">
+            <summary>
+            Moves the entire geometry from one point to another
+            Here from point is considered as center for reference
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.Scale(System.Single)">
+            <summary>
+            Scales the geometry
+            </summary>
+            <param name="factor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.IsPointInside(System.Numerics.Vector3)">
+            <summary>
+            Returns true if the given point is inside the convex model
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.AddOrigin">
+            <summary>
+            The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.FileTranslatorFacade.Rotate(FileTranslator3d.Utility.RotationAxis,System.Double)">
+            <summary>
+            Rotates the geometry with respect to the given axis and angle
+            </summary>
+            <param name="axis"></param>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.BrepGeometry">
+            <summary>
+            Represents 3d geometry model which can be used across all file formats
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.#ctor(System.Collections.Generic.List{FileTranslator3d.Geometry.Triangle})">
+            <summary>
+            Constructor which take triangle as argument
+            </summary>
+            <param name="triangles"></param>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.BrepGeometry.Triangles">
+            <summary>
+            Array of triangles geometry has
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.GetSurfaceArea">
+            <summary>
+            Returns the surface area  - sum of area of all triangles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.GetSurfaceVolume">
+            <summary>
+            Returns the surface volume 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.Translate(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Translates/Moves the geometry from one point to another
+            </summary>
+            <param name="fromPoint"></param>
+            <param name="toPoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.Scale(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Scales the geometry - default is 1
+            </summary>
+            <param name="sf"></param>
+            <param name="xf"></param>
+            <param name="yf"></param>
+            <param name="zf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.Rotate(FileTranslator3d.Utility.RotationAxis,System.Double)">
+            <summary>
+            Rotates the entire geometry to a specified angle with respect to the axis
+            </summary>
+            <param name="axis"></param>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.AddOrigin">
+            <summary>
+            The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.BrepGeometry.IsPointInside(System.Numerics.Vector3)">
+            <summary>
+            Returns true if the given point is inside the convex geometry.
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.Face">
+            <summary>
+            Face class - a face can hold more than one triangles
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Face.#ctor">
+            <summary>
+            Constructor - initializes the properties
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Face.VertexIndices">
+            <summary>
+            Stores the vertices indexes
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Face.TextureIndices">
+            <summary>
+            Stores the texture indexes
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Face.NormalIndices">
+            <summary>
+            Stores the normal indexes
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Face.FaceType">
+            <summary>
+            Holds the type of face based on enum
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.FaceType">
+            <summary>
+            Enum represents the type of face - based on obj file format 
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Geometry.FaceType.VertexIndices">
+            <summary>
+            Represents vertex only - f v1 v2 v3 ....
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Geometry.FaceType.VertexTextures">
+            <summary>
+            Represents vertex and textures - f v1/vt1 v2/vt2 v3/vt3 ...
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Geometry.FaceType.VertexNormals">
+            <summary>
+            Represents vertex and normals - f v1//vn1 v2//vn2 v3//vn3 ...
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Geometry.FaceType.VertexTextureNormals">
+            <summary>
+            Face type represents vertex, textures and normals - f v1/vt1/vn1 v2/vt2/vn2 v3/vt3/vn3 ...
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Geometry.FaceType.None">
+            <summary>
+            If no matching format found
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.IPrimitive">
+            <summary>
+            Interface representation of generic geometry model. 
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.GetSurfaceArea">
+            <summary>
+            Returns the surface area
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.GetSurfaceVolume">
+            <summary>
+            Returns the surface volume
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.IsPointInside(System.Numerics.Vector3)">
+            <summary>
+            Checks if the given point is inside or outside the 3d geometry
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.Translate(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Moves the geometry from one point to another
+            </summary>
+            <param name="fromPoint"></param>
+            <param name="toPoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.Rotate(FileTranslator3d.Utility.RotationAxis,System.Double)">
+            <summary>
+            Rotates the geometry to given angle with respect to an axis
+            </summary>
+            <param name="axis"></param>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.Scale(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Scales the geometry - default scale factor is 1
+            </summary>
+            <param name="sf"></param>
+            <param name="xf"></param>
+            <param name="yf"></param>
+            <param name="zf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.IPrimitive.AddOrigin">
+            <summary>
+            The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.Plane">
+            <summary>
+            Plane class - for calculating the face to point distance
+            ref : https://www.codeproject.com/Articles/1065730/Point-Inside-Convex-Polygon-in-Cplusplus#:~:text=A%20point%20is%20determined%20to,basic%20idea%20of%20this%20algorithm.
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Plane.#ctor(FileTranslator3d.Geometry.Triangle)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="triangle"></param>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Plane.op_Multiply(System.Numerics.Vector3,FileTranslator3d.Geometry.Plane)">
+            <summary>
+            Operator overload to calculate the plane to point distance
+            </summary>
+            <param name="pt"></param>
+            <param name="pl"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Geometry.Triangle">
+            <summary>
+            Triangle class - holds array of points and normal
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.#ctor">
+            <summary>
+            Constructor - initializes the points to zero
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Triangle.Points">
+            <summary>
+            Array of points 
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Triangle.Normal">
+            <summary>
+            Triangle normal
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Geometry.Triangle.AttributeByteCount">
+            <summary>
+            This is for writing the stl binary format
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.Translate(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Translates the triangle from one point to another
+            </summary>
+            <param name="fromPoint"></param>
+            <param name="toPoint"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.GetArea">
+            <summary>
+            Returns the area of the triangle
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.GetVolume">
+            <summary>
+            Returns the volume
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.AddNormal(System.Numerics.Vector3,System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Calculates the normal based on the vertices on the triangle
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="p3"></param>
+        </member>
+        <member name="T:FileTranslator3d.IFileTranslatorFacade">
+            <summary>
+            Facade interface -  Single class represents the entire file conversion functionality
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.ReadFile(System.String,System.String)">
+            <summary>
+            Reads the given file
+            </summary>
+            <param name="inputFile"></param>
+            <param name="inputFormat"></param>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.WriteFile(System.String,System.String)">
+            <summary>
+            Writes the output file
+            </summary>
+            <param name="outputFile"></param>
+            <param name="outputFormat"></param>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.GetSurfaceArea">
+            <summary>
+            Returns the surface area for the entire geometry
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.GetSurfaceVolume">
+            <summary>
+            Returns the surface volume for the entire geometry
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.Translate(System.Single,System.Single,System.Single)">
+            <summary>
+            Moves the entire geometry from one point to another
+            Here from point is considered as center for reference
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <param name="z"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.Rotate(FileTranslator3d.Utility.RotationAxis,System.Double)">
+            <summary>
+            Rotates the geometry with respect to the given axis and angle
+            </summary>
+            <param name="axis"></param>
+            <param name="angle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.Scale(System.Single)">
+            <summary>
+            Scales the geometry
+            </summary>
+            <param name="factor"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.IsPointInside(System.Numerics.Vector3)">
+            <summary>
+            Returns true if the given point is inside the convex model
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.IFileTranslatorFacade.AddOrigin">
+            <summary>
+            The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Utility.FileType">
+            <summary>
+            Type of file to be converted
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.FileType.OBJ">
+            <summary>
+            Obj format
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.FileType.STLBINARY">
+            <summary>
+            Stl binary
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.FileType.STLASCII">
+            <summary>
+            Stl ascii - just for representation
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.FileType.IGES">
+            <summary>
+            iges - just for representation
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Utility.RotationAxis">
+            <summary>
+            Enum represents which axis is selected for rotation
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.RotationAxis.X">
+            <summary>
+            With respect to x axis
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.RotationAxis.Y">
+            <summary>
+            With respect to y axis
+            </summary>
+        </member>
+        <member name="F:FileTranslator3d.Utility.RotationAxis.Z">
+            <summary>
+            With respect to z axis
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Utility.Extensions">
+            <summary>
+            Extenstion class for the vector
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Utility.Extensions.Magnitude(System.Numerics.Vector3)">
+            <summary>
+            Returns the magnitude of the vector
+            </summary>
+            <param name="vec"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

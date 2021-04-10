@@ -4,52 +4,56 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using FileTranslator3d.Models;
 using FileTranslator3d.Utility;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FileTranslator3d.API.Controllers
 {
+    /// <summary>
+    /// API controller class 
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class FileTranslatorController : ControllerBase
     {
-        #region Static Fields
-
-        private static readonly string[] Summaries =
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        #endregion
-
         #region Fields
 
-        private readonly ILogger<FileTranslatorController> _logger;
-        private readonly IFileTranslatorFacade _fileTranslator;
         private readonly IWebHostEnvironment _environment;
-        public FileArgumentOptions FileDetails { get; private set; }
+        private readonly IFileTranslatorFacade _fileTranslator;
 
         #endregion
 
         #region Constructor
-
-        public FileTranslatorController(ILogger<FileTranslatorController> logger, IFileTranslatorFacade fileTranslator,
+        /// <summary>
+        /// Constructor - initializes the translator and environment
+        /// </summary>
+        /// <param name="fileTranslator"></param>
+        /// <param name="environment"></param>
+        public FileTranslatorController(IFileTranslatorFacade fileTranslator,
             IWebHostEnvironment environment)
         {
-            _logger = logger;
             _fileTranslator = fileTranslator;
             _environment = environment;
         }
 
         #endregion
 
+        #region Properties
+        /// <summary>
+        /// File Argument options - for file name and type of file
+        /// </summary>
+        public FileArgumentOptions FileDetails { get; private set; }
+
+        #endregion
+
         #region Member Functions
 
+        /// <summary>
+        /// Uploads the file to server
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("uploadfile")]
         public async Task<ActionResult<FileArgumentOptions>> UploadFile()
@@ -66,11 +70,16 @@ namespace FileTranslator3d.API.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            FileDetails = new FileArgumentOptions() {InputFileName = path, Status = "Success"};
+            FileDetails = new FileArgumentOptions {InputFileName = path, Status = "Success"};
 
             return Ok(FileDetails);
         }
 
+        /// <summary>
+        /// Download the file after conversion
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         [Route("downloadfile")]
         public async Task<IActionResult> DownloadFile(string filename)
         {
@@ -91,11 +100,16 @@ namespace FileTranslator3d.API.Controllers
             return File(memory, GetContentType(filename), Path.GetFileName(filename));
         }
 
+        /// <summary>
+        /// api to convert the file in the given format 
+        /// </summary>
+        /// <param name="transformation"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("translatefile")]
         public async Task<ActionResult<TransformationModel>> TranslateFile(TransformationModel transformation)
         {
-            string outputFile = string.Empty;
+            var outputFile = string.Empty;
             double area = 0;
             double volume = 0;
             try
@@ -107,7 +121,7 @@ namespace FileTranslator3d.API.Controllers
                         _fileTranslator.ReadFile(args.InputFileName, args.InputFileType));
                     await Task.Run(() => area = _fileTranslator.GetSurfaceArea());
                     await Task.Run(() => volume = _fileTranslator.GetSurfaceVolume());
-                    
+
                     Enum.TryParse(transformation.RotationAxis, out RotationAxis axis);
 
                     await Task.Run(() => _fileTranslator.Scale(transformation.Scale));
@@ -127,27 +141,41 @@ namespace FileTranslator3d.API.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound(new TransformationModel() { Status = false});
+                return NotFound(new TransformationModel {Status = false, Message = ex.ToString()});
             }
-            return Ok(new TransformationModel() { Status= true, OutPutFileName = outputFile, Area = area, Volume = volume});
+
+            return Ok(new TransformationModel
+                {Status = true, OutPutFileName = outputFile, Area = area, Volume = volume});
         }
 
+        /// <summary>
+        /// Api to check if the given point is inside or outside the 3d surface
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("ispointinside")]
         public async Task<ActionResult<PointStateModel>> IsPointInside(PointStateModel point)
         {
-            bool state = false;
+            bool state;
             try
             {
                 state = await Task.Run(() => _fileTranslator.IsPointInside(new Vector3(point.X, point.Y, point.Z)));
             }
             catch (Exception ex)
             {
-                return NotFound(new PointStateModel() { Inside = false });
+                return NotFound(new PointStateModel {Inside = false, Message = ex.ToString()});
             }
-            return Ok(new PointStateModel() { Inside = state });
+
+            return Ok(new PointStateModel {Inside = state});
         }
 
+
+        /// <summary>
+        /// Api to move geometry to the specified point - base point is center
+        /// </summary>
+        /// <param name="transformation"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("transform")]
         public async Task<ActionResult<TransformationModel>> Transform(TransformationModel transformation)
@@ -156,32 +184,32 @@ namespace FileTranslator3d.API.Controllers
             {
                 await Task.Run(() =>
                     _fileTranslator.Translate(transformation.OriginX, transformation.OriginY, transformation.OriginZ));
-
             }
             catch (Exception ex)
             {
-                return NotFound(new TransformationModel() {Status = false});
+                return NotFound(new TransformationModel {Status = false, Message = ex.ToString()});
             }
 
-            return Ok(new TransformationModel() { Status = true});
+            return Ok(new TransformationModel {Status = true});
         }
 
         private FileArgumentOptions GetTranslationFileDetails(TransformationModel transformation)
         {
-            FileArgumentOptions argument = new FileArgumentOptions();
+            var argument = new FileArgumentOptions();
             if (transformation != null)
             {
                 argument.InputFileName = transformation.InputFilePath;
                 var ext = Path.GetExtension(transformation.InputFilePath);
                 if (ext != null) argument.InputFileType = ext.Substring(1, ext.Length - 1);
                 var directory = Path.GetDirectoryName(transformation.InputFilePath);
-                argument.OutPutFileName = Path.Combine(directory ?? throw new InvalidOperationException(), 
+                argument.OutPutFileName = Path.Combine(directory ?? throw new InvalidOperationException(),
                     Path.GetFileNameWithoutExtension(transformation.InputFilePath) + "." +
-                    transformation.OutPutFileType.ToLower());  
+                    transformation.OutPutFileType.ToLower());
                 argument.OutPutFileType = transformation.OutPutFileType;
                 return argument;
             }
-            else return null;
+
+            return null;
         }
 
         private string GetContentType(string path)

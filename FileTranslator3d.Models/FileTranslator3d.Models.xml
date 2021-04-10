@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileTranslator3d.Models</name>
+    </assembly>
+    <members>
+        <member name="T:FileTranslator3d.Models.FileArgumentOptions">
+            <summary>
+            Model class represents file arguments
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.FileArgumentOptions.InputFileName">
+            <summary>
+            Name and path of the input file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.FileArgumentOptions.InputFileType">
+            <summary>
+            Type of the input file - obj or stl
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.FileArgumentOptions.OutPutFileName">
+            <summary>
+            Name and path of the output file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.FileArgumentOptions.OutPutFileType">
+            <summary>
+            Type of the output file - obj or stl
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.FileArgumentOptions.Status">
+            <summary>
+            Status for returning from the api
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Models.PointStateModel">
+            <summary>
+            Model class represent the point status
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.PointStateModel.Inside">
+            <summary>
+            Returns if it is inside
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.PointStateModel.X">
+            <summary>
+            X coordinate value of the point
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.PointStateModel.Y">
+            <summary>
+            Y coordinate value of the point
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.PointStateModel.Z">
+            <summary>
+            Z coordinate value of the point
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.PointStateModel.Message">
+            <summary>
+            Error message in case of exception
+            </summary>
+        </member>
+        <member name="T:FileTranslator3d.Models.TransformationModel">
+            <summary>
+            Model represents the file conversion along with the transformation details
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Scale">
+            <summary>
+            Scale factor
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Rotation">
+            <summary>
+            Rotation angle
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.OriginX">
+            <summary>
+            Rotation axis X
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.OriginY">
+            <summary>
+            Rotation axis Y
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.OriginZ">
+            <summary>
+            Rotation axis Z
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Status">
+            <summary>
+            Return status
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.OutPutFileType">
+            <summary>
+            Type of input file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.InputFilePath">
+            <summary>
+            Path of the input file
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.OutPutFileName">
+            <summary>
+            Output file path
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Area">
+            <summary>
+            Area
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Volume">
+            <summary>
+            Volume
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.RotationAxis">
+            <summary>
+            Rotation axis in string format
+            </summary>
+        </member>
+        <member name="P:FileTranslator3d.Models.TransformationModel.Message">
+            <summary>
+            Status message in case or exception or errors
+            </summary>
+        </member>
+    </members>
+</doc>

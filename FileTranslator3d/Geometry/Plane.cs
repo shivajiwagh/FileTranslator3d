@@ -1,51 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace FileTranslator3d.Geometry
 {
+    /// <summary>
+    /// Plane class - for calculating the face to point distance
+    /// ref : https://www.codeproject.com/Articles/1065730/Point-Inside-Convex-Polygon-in-Cplusplus#:~:text=A%20point%20is%20determined%20to,basic%20idea%20of%20this%20algorithm.
+    /// </summary>
     public class Plane
     {
+        #region Fields
+
         private readonly double _a;
         private readonly double _b;
         private readonly double _c;
         private readonly double _d;
 
-        public Plane(double a, double b, double c, double d)
-        {
-            this._a = a;
-            this._b = b;
-            this._c = c;
-            this._d = d;
-        }
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="triangle"></param>
         public Plane(Triangle triangle)
         {
-            Vector3 v = triangle.Points[1] - triangle.Points[0];
-            Vector3 u = triangle.Points[2] - triangle.Points[0];
-
-            Vector3 n = u * v;
-
+            var normal = triangle.Normal;
             // normal vector		
-            double a = n.X;
-            double b = n.Y;
-            double c = n.Z;
-            double d = -(a * triangle.Points[0].X + b * triangle.Points[0].Y + c * triangle.Points[0].Z);
+            double a = normal.X;
+            double b = normal.Y;
+            double c = normal.Z;
+            var d = -(a * triangle.Points[0].X + b * triangle.Points[0].Y + c * triangle.Points[0].Z);
 
-            this._a = a;
-            this._b = b;
-            this._c = c;
-            this._d = d;
+            _a = a;
+            _b = b;
+            _c = c;
+            _d = d;
         }
 
-        public static Plane operator -(Plane pl)
-        {
-            return new Plane(-pl._a, -pl._b, -pl._c, -pl._d);
-        }
+        #endregion
 
+        #region Member Functions
+        /// <summary>
+        /// Operator overload to calculate the plane to point distance
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="pl"></param>
+        /// <returns></returns>
         public static double operator *(Vector3 pt, Plane pl)
         {
-            return (pt.X * pl._a + pt.Y * pl._b + pt.Z * pl._c + pl._d);
+            return pt.X * pl._a + pt.Y * pl._b + pt.Z * pl._c + pl._d;
         }
+
+        #endregion
     }
 }

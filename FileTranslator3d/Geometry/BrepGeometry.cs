@@ -1,82 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.InteropServices.ComTypes;
 using FileTranslator3d.Utility;
 
 namespace FileTranslator3d.Geometry
 {
+    /// <summary>
+    /// Represents 3d geometry model which can be used across all file formats
+    /// </summary>
     public class BrepGeometry : IPrimitive
     {
-        public List<Triangle> Triangles { get; set; }
+        #region Constructor
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public BrepGeometry()
         {
             Triangles = new List<Triangle>();
         }
 
+        /// <summary>
+        /// Constructor which take triangle as argument
+        /// </summary>
+        /// <param name="triangles"></param>
         public BrepGeometry(List<Triangle> triangles)
         {
             Triangles = triangles;
         }
 
-        //public double Area => GetArea();
-        //public double Volume => GetVolume();
+        #endregion
 
+        #region Properties
+
+        /// <summary>
+        /// Array of triangles geometry has
+        /// </summary>
+        public List<Triangle> Triangles { get; set; }
+
+        #endregion
+
+        #region Interface Implementations
+
+        /// <summary>
+        /// Returns the surface area  - sum of area of all triangles
+        /// </summary>
+        /// <returns></returns>
         public double GetSurfaceArea()
         {
             double area = 0;
-            Triangles.ForEach(t =>
-            {
-                area += t.GetArea();
-            });
+            Triangles.ForEach(t => { area += t.GetArea(); });
             return area;
         }
 
+        /// <summary>
+        /// Returns the surface volume 
+        /// </summary>
+        /// <returns></returns>
         public double GetSurfaceVolume()
         {
             double volume = 0;
-            Triangles.ForEach(t =>
-            {
-                volume += t.GetVolume();
-            });
+            Triangles.ForEach(t => { volume += t.GetVolume(); });
             return volume;
         }
 
+        /// <summary>
+        /// Translates/Moves the geometry from one point to another
+        /// </summary>
+        /// <param name="fromPoint"></param>
+        /// <param name="toPoint"></param>
+        /// <returns></returns>
         public bool Translate(Vector3 fromPoint, Vector3 toPoint)
         {
-            foreach (Triangle triangle in Triangles)
+            foreach (var triangle in Triangles)
             {
-                Vector3 resultant = toPoint - fromPoint;
-                for (int i = 0; i < triangle.Points.Count; i++)
-                {
-                    triangle.Points[i] = triangle.Points[i] + resultant;
-                }
+                var resultant = toPoint - fromPoint;
+                for (var i = 0; i < triangle.Points.Count; i++) triangle.Points[i] = triangle.Points[i] + resultant;
             }
+
             return true;
         }
 
+        /// <summary>
+        /// Scales the geometry - default is 1
+        /// </summary>
+        /// <param name="sf"></param>
+        /// <param name="xf"></param>
+        /// <param name="yf"></param>
+        /// <param name="zf"></param>
+        /// <returns></returns>
         public bool Scale(float sf, float xf = 0, float yf = 0, float zf = 0)
         {
-            foreach (Triangle triangle in Triangles)
-            {
-                for (int i = 0; i < triangle.Points.Count; i++)
+            foreach (var triangle in Triangles)
+                for (var i = 0; i < triangle.Points.Count; i++)
                 {
-                    Vector3 newPoint = new Vector3(triangle.Points[i].X * sf + (1 - sf) * xf,
+                    var newPoint = new Vector3(triangle.Points[i].X * sf + (1 - sf) * xf,
                         triangle.Points[i].Y * sf + (1 - sf) * yf, triangle.Points[i].Z * sf + (1 - sf) * zf);
-                        triangle.Points[i] = newPoint;
+                    triangle.Points[i] = newPoint;
                 }
-            }
+
             return true;
         }
 
+        /// <summary>
+        /// Rotates the entire geometry to a specified angle with respect to the axis
+        /// </summary>
+        /// <param name="axis"></param>
+        /// <param name="angle"></param>
+        /// <returns></returns>
         public bool Rotate(RotationAxis axis, double angle)
         {
-            angle = (Math.PI * angle) / 180;
-            foreach (Triangle triangle in Triangles)
-            {
-                for (int i = 0; i < triangle.Points.Count; i++)
-                {
+            angle = Math.PI * angle / 180;
+            foreach (var triangle in Triangles)
+                for (var i = 0; i < triangle.Points.Count; i++)
                     switch (axis)
                     {
                         case RotationAxis.X:
@@ -92,61 +128,80 @@ namespace FileTranslator3d.Geometry
                             triangle.Points[i] = RotatePointAboutX(triangle.Points[i], angle);
                             break;
                     }
-                }
-            }
+
             return true;
         }
 
-        private Vector3 RotatePointAboutX(Vector3 point, double angle)
-        {
-            Vector3 retPoint = new Vector3
-            {
-                X = point.X,
-                Y = (float)(point.Y * Math.Cos(angle) - point.Z * Math.Sin(angle)),
-                Z = (float)(point.Y * Math.Sin(angle) + point.Z * Math.Cos(angle))
-            };
-            return retPoint;
-        }
-
-        private Vector3 RotatePointAboutY(Vector3 point, double angle)
-        {
-            Vector3 retPoint = new Vector3();
-            retPoint.Y = point.Y;
-            retPoint.Z = (float)(point.Z * Math.Cos(angle) - point.X * Math.Sin(angle));
-            retPoint.X = (float)(point.Z * Math.Sin(angle) + point.X * Math.Cos(angle));
-            return retPoint;
-        }
-
-        private Vector3 RotatePointAboutZ(Vector3 point, double angle)
-        {
-            Vector3 retPoint = new Vector3();
-            retPoint.Z = point.Z;
-            retPoint.X = (float)(point.X * Math.Cos(angle) - point.Y * Math.Sin(angle));
-            retPoint.Y = (float)(point.X * Math.Sin(angle) + point.Y * Math.Cos(angle));
-            return retPoint;
-        }
-
+        /// <summary>
+        /// The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+        /// </summary>
         public void AddOrigin()
         {
-            Vector3 pt1 = new Vector3(0, 0, 0);
-            Vector3 pt2 = new Vector3(5, 0, 0);
-            Vector3 pt3 = new Vector3(5, 5, 0);
-            Triangle tr = new Triangle();
+            var pt1 = new Vector3(0, 0, 0);
+            var pt2 = new Vector3(5, 0, 0);
+            var pt3 = new Vector3(5, 5, 0);
+            var tr = new Triangle();
             tr.Points.Add(pt1);
             tr.Points.Add(pt2);
             tr.Points.Add(pt3);
             Triangles.Add(tr);
         }
 
+        /// <summary>
+        /// Returns true if the given point is inside the convex geometry.
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public bool IsPointInside(Vector3 point)
         {
-            foreach (Triangle triangle in this.Triangles)
+            foreach (var triangle in Triangles)
             {
-                Plane plane = new Plane(triangle);
-                double dist = point * plane;
-                if (dist > 0) return false;
+                var plane = new Plane(triangle);
+                var dist = point * plane;
+                if (dist > 0)
+                    return false;
             }
+
             return true;
         }
+
+        #endregion
+
+        #region Member Functions
+
+        private Vector3 RotatePointAboutX(Vector3 point, double angle)
+        {
+            var retPoint = new Vector3
+            {
+                X = point.X,
+                Y = (float) (point.Y * Math.Cos(angle) - point.Z * Math.Sin(angle)),
+                Z = (float) (point.Y * Math.Sin(angle) + point.Z * Math.Cos(angle))
+            };
+            return retPoint;
+        }
+
+        private Vector3 RotatePointAboutY(Vector3 point, double angle)
+        {
+            var retPoint = new Vector3
+            {
+                Y = point.Y,
+                Z = (float) (point.Z * Math.Cos(angle) - point.X * Math.Sin(angle)),
+                X = (float) (point.Z * Math.Sin(angle) + point.X * Math.Cos(angle))
+            };
+            return retPoint;
+        }
+
+        private Vector3 RotatePointAboutZ(Vector3 point, double angle)
+        {
+            var retPoint = new Vector3
+            {
+                Z = point.Z,
+                X = (float)(point.X * Math.Cos(angle) - point.Y * Math.Sin(angle)),
+                Y = (float)(point.X * Math.Sin(angle) + point.Y * Math.Cos(angle))
+            };
+            return retPoint;
+        }
+
+        #endregion
     }
 }

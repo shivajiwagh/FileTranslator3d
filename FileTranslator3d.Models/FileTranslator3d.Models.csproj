@@ -4,4 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Shivaji\Github\FileTranslator3d\FileTranslator3d.Models\FileTranslator3d.Models.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>D:\Shivaji\Github\FileTranslator3d\FileTranslator3d.Models\FileTranslator3d.Models.xml</DocumentationFile>
+  </PropertyGroup>
+
 </Project>

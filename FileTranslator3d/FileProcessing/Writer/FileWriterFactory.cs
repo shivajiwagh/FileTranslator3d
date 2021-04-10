@@ -1,21 +1,33 @@
-﻿using FileTranslator3d.Utility;
-using System;
+﻿using System;
+using FileTranslator3d.Utility;
 
 namespace FileTranslator3d.FileProcessing.Writer
 {
+    /// <summary>
+    /// Factory for getting the appropriate writer 
+    /// </summary>
     public class FileWriterFactory : IFileWriterFactory
     {
-        public IFileWriter GetFileWriter(FileType filetype)
+        #region Interface Implementations
+
+        /// <summary>
+        /// Returns the appropriate writer instance
+        /// </summary>
+        /// <param name="fileType"></param>
+        /// <returns></returns>
+        public IFileWriter GetFileWriter(FileType fileType)
         {
-            switch (filetype)
+            switch (fileType)
             {
                 case FileType.OBJ:
                     return new ObjWriter();
                 case FileType.STLBINARY:
                     return new StlBinaryWriter();
                 default:
-                    throw new ApplicationException(string.Format("'{0}' reader cannot be created", filetype.ToString())); //TODO: need to modify based on requirement
+                    throw new ApplicationException($"'{fileType.ToString()}' reader cannot be created");
             }
         }
+
+        #endregion
     }
 }

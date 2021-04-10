@@ -1,13 +1,11 @@
-﻿@using System.IO
-@using System.Security.Permissions
-@using FileTranslator3d.Models
-@using FileTranslator3d.Web.Services
-@using Microsoft.AspNetCore.Http
+﻿@using FileTranslator3d.Web.Services
 @using Newtonsoft.Json
+@using System.IO
+@using FileTranslator3d.Models
 @inject IJSRuntime JsRuntime
 
 <div class="drag-drop-zone">
-    <InputFile OnChange="OnSelectFile" />
+    <InputFile OnChange="OnSelectFile"/>
     @_selectedFileString
 </div>
 
@@ -67,7 +65,7 @@
                     </div>
                     <div class="col-md-2" style="padding-top: 2rem">
                         <button class="btn btn-primary" type="button" @onclick="OnStartTranslate">
-                            @if (_translateStartStatus == true)
+                            @if (_translateStartStatus)
                             {
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             }
@@ -80,7 +78,7 @@
     </div>
 }
 
-@if (_status == true)
+@if (_status)
 {
     <div class="alert alert-success" role="alert">
         <h4 class="alert-heading">File translation complete!</h4>
@@ -108,7 +106,7 @@
                 </div>
                 <input type="number" @bind="_pointZ" class="form-control" required>
                 <button class="btn btn-primary" type="button" @onclick="OnCheckPoint" style="margin-left: 5rem">
-                    @if (_pointCheckApiStatus == true)
+                    @if (_pointCheckApiStatus)
                     {
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     }
@@ -120,7 +118,7 @@
         @if (_pointCheckStatus)
         {
             <div class="col-6">
-                <div class="alert @(_pointInside? "alert-success" : "alert-warning")" role="alert">
+                <div class="alert @(_pointInside ? "alert-success" : "alert-warning")" role="alert">
                     <p class="lead">Point is @_pointStatusString</p>
                 </div>
             </div>
@@ -130,11 +128,12 @@
 }
 
 @code {
+
     [Inject]
     public ITranslatorApiService TranslatorApiService { get; set; }
 
-    const string DefaultFilename = "Drop a text file here to view it, or click to choose a file";
-    const int MaxFileSize = 5 * 1024 * 1024; // 5MB
+        const string DefaultFilename = "Drop a text file here to view it, or click to choose a file";
+        const int MaxFileSize = 5 * 1024 * 1024; // 5MB
     bool _status = false;
 
     string _fileName;
@@ -177,8 +176,9 @@
             var ms = new MemoryStream();
             await _selectedFile.Data.CopyToAsync(ms);
 
-            var content = new MultipartFormDataContent {
-                { new ByteArrayContent(ms.GetBuffer()), "\"upload\"", _selectedFile.Name }
+            var content = new MultipartFormDataContent
+            {
+                {new ByteArrayContent(ms.GetBuffer()), "\"upload\"", _selectedFile.Name}
             };
 
             var response = await TranslatorApiService.UploadFile(content);
@@ -187,8 +187,11 @@
                 _fileUploadSuccess = true;
                 var json = await response.Content.ReadAsStringAsync();
                 var argsOptions = JsonConvert.DeserializeObject<FileArgumentOptions>(json);
-                _fileFullName = argsOptions.InputFileName;
-                await RunTranslation(argsOptions.InputFileName);
+                if (argsOptions != null)
+                {
+                    _fileFullName = argsOptions.InputFileName;
+                    await RunTranslation(argsOptions.InputFileName);
+                }
             }
         }
         else
@@ -199,7 +202,7 @@
 
     private async Task RunTranslation(string filename)
     {
-        var translateResult = await TranslatorApiService.TranslateFile(new TransformationModel()
+        var translateResult = await TranslatorApiService.TranslateFile(new TransformationModel
         {
             Scale = _scale,
             Rotation = _rotation,
@@ -228,10 +231,10 @@
     {
         _pointCheckStatusButtonText = "Checking...";
         _pointCheckApiStatus = true;
-        var result = await TranslatorApiService.IsPointInside(new PointStateModel() { X = _pointX, Y = _pointY, Z = _pointZ });
+        var result = await TranslatorApiService.IsPointInside(new PointStateModel {X = _pointX, Y = _pointY, Z = _pointZ});
         if (result != null)
         {
-            PointStateModel state = result.Value;
+            var state = result.Value;
             if (state.Inside)
             {
                 _pointCheckStatus = true;
@@ -251,7 +254,7 @@
     }
 
     /// <summary>
-    /// Ref: https://www.mikesdotnetting.com/article/341/uploading-files-in-blazor
+    ///     Ref: https://www.mikesdotnetting.com/article/341/uploading-files-in-blazor
     /// </summary>
     /// <param name="files"></param>
     /// <returns></returns>
@@ -266,4 +269,5 @@
             _status = false;
         }
     }
+
 }

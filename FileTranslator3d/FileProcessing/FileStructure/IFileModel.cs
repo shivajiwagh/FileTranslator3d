@@ -2,11 +2,16 @@
 
 namespace FileTranslator3d.FileProcessing.FileStructure
 {
-    //For inheritance purpose only
+    /// <summary>
+    /// For inheritance purpose only
+    /// </summary>
     public interface IFileModel
     {
         #region Member Functions
-
+        /// <summary>
+        /// Returns the generic geometry model structure so that it can be reused across all formats
+        /// </summary>
+        /// <returns></returns>
         IPrimitive GetGeometryModel();
 
         #endregion

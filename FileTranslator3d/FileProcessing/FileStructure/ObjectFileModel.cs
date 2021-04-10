@@ -4,10 +4,15 @@ using FileTranslator3d.Geometry;
 
 namespace FileTranslator3d.FileProcessing.FileStructure
 {
+     /// <summary>
+     /// Concrete implementation of IFileModel
+     /// </summary>
     public class ObjectFileModel : IFileModel
     {
         #region Constructor
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ObjectFileModel()
         {
             Faces = new List<Face>();
@@ -21,15 +26,35 @@ namespace FileTranslator3d.FileProcessing.FileStructure
         #region Properties
 
         //The OBJ file support should be limited to v, vt, vn and f elements.
-        public List<Vector3> Vertices { get; set; } //v element
-        public List<Face> Faces { get; set; } //f element
-        public List<Vector3> Normals { get; set; } // vn element
-        public List<Vector3> Textures { get; set; } // vt element
+        /// <summary>
+        /// Holds the vertices - Vector3 class represents a point
+        /// v element in Obj file
+        /// </summary>
+        public List<Vector3> Vertices { get; set; }
+
+        /// <summary>
+        /// f element - face in obj file
+        /// </summary>
+        public List<Face> Faces { get; set; }
+
+        /// <summary>
+        /// vn element - represents all normals
+        /// </summary>
+        public List<Vector3> Normals { get; set; }
+
+        /// <summary>
+        /// vt element - holds texture coordinates
+        /// </summary>
+        public List<Vector3> Textures { get; set; }
 
         #endregion
 
         #region Interface Implementations
 
+        /// <summary>
+        /// Returns the generic geometry model
+        /// </summary>
+        /// <returns></returns>
         public IPrimitive GetGeometryModel()
         {
             var mesh = new BrepGeometry();
@@ -47,18 +72,18 @@ namespace FileTranslator3d.FileProcessing.FileStructure
             {
                 //Points
                 var triangle = new Triangle();
-                triangle.Points.Add(Vertices[face.VertexIndices[0] - 1]);
-                triangle.Points.Add(Vertices[face.VertexIndices[1] - 1]);
-                triangle.Points.Add(Vertices[face.VertexIndices[2] - 1]);
+                var p1 = Vertices[face.VertexIndices[0] - 1];
+                var p2 = Vertices[face.VertexIndices[1] - 1];
+                var p3 = Vertices[face.VertexIndices[2] - 1];
+                triangle.Points.Add(p1);
+                triangle.Points.Add(p2);
+                triangle.Points.Add(p3);
 
                 ////Normal
-                if (face.NormalIndices.Count == 3)
-                {
-                    var p1 = Normals[face.NormalIndices[0] - 1];
-                    var p2 = Normals[face.NormalIndices[1] - 1];
-                    var p3 = Normals[face.NormalIndices[2] - 1];
+                if (face.NormalIndices.Count > 0)
+                    triangle.Normal = Normals[face.NormalIndices[0] - 1];
+                else
                     triangle.AddNormal(p1, p2, p3);
-                }
 
                 mesh.Triangles.Add(triangle);
             }
@@ -68,18 +93,19 @@ namespace FileTranslator3d.FileProcessing.FileStructure
                 {
                     //Points
                     var triangle = new Triangle();
-                    triangle.Points.Add(Vertices[face.VertexIndices[0] - 1]);
-                    triangle.Points.Add(Vertices[face.VertexIndices[i] - 1]);
-                    triangle.Points.Add(Vertices[face.VertexIndices[i + 1] - 1]);
+                    var p1 = Vertices[face.VertexIndices[0] - 1];
+                    var p2 = Vertices[face.VertexIndices[i] - 1];
+                    var p3 = Vertices[face.VertexIndices[i + 1] - 1];
+
+                    triangle.Points.Add(p1);
+                    triangle.Points.Add(p2);
+                    triangle.Points.Add(p3);
 
                     //Normal
-                    if (face.NormalIndices.Count > 3)
-                    {
-                        var p1 = Normals[face.NormalIndices[0] - 1];
-                        var p2 = Normals[face.NormalIndices[i] - 1];
-                        var p3 = Normals[face.NormalIndices[i + 1] - 1];
+                    if (face.NormalIndices.Count > 0)
+                        triangle.Normal = Normals[face.NormalIndices[0] - 1];
+                    else
                         triangle.AddNormal(p1, p2, p3);
-                    }
 
                     mesh.Triangles.Add(triangle);
                 }

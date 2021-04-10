@@ -1,14 +1,24 @@
-﻿using FileTranslator3d.FileProcessing.FileStructure;
-using FileTranslator3d.Geometry;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using FileTranslator3d.FileProcessing.FileStructure;
+using FileTranslator3d.Geometry;
 
 namespace FileTranslator3d.FileProcessing.Reader
 {
+    /// <summary>
+    /// Concrete implementation of the reader
+    /// </summary>
     public class ObjReader : IFileReader
     {
+        #region Interface Implementations
+
+        /// <summary>
+        /// Reads the specified obj file and return geometry model
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public IPrimitive ReadFile(string filename)
         {
             var objModel = new ObjectFileModel();
@@ -47,6 +57,10 @@ namespace FileTranslator3d.FileProcessing.Reader
 
             return objModel.GetGeometryModel();
         }
+
+        #endregion
+
+        #region Member Functions
 
         private void ParseVertex(string[] lines, ObjectFileModel objModel)
         {
@@ -99,7 +113,7 @@ namespace FileTranslator3d.FileProcessing.Reader
 
             var face = new Face
             {
-                Facetype = type
+                FaceType = type
             };
             foreach (var line in lines.Skip(1))
                 switch (type)
@@ -173,5 +187,7 @@ namespace FileTranslator3d.FileProcessing.Reader
 
             return FaceType.None;
         }
+
+        #endregion
     }
 }

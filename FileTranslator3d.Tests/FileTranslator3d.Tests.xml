@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileTranslator3d.Tests</name>
+    </assembly>
+    <members>
+        <member name="T:FileTranslator3d.Tests.FileTranslatorTest">
+            <summary>
+            Test case contains various test for file conversion
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.Initialize(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext)">
+            <summary>
+            Initializes the translator
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadFile1">
+            <summary>
+            Capsule model tests all the features - contains concave shape
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadFile2">
+            <summary>
+            Model containing convex shapes
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadFile3">
+            <summary>
+            Another model containing convex shapes
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadFile4">
+            <summary>
+            One move concave shape model
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadFile5">
+            <summary>
+            Another obj file format
+            </summary>
+        </member>
+    </members>
+</doc>
