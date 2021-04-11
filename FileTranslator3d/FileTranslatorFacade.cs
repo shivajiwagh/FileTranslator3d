@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System;
+using System.IO;
+using System.Numerics;
 using FileTranslator3d.FileProcessing;
 using FileTranslator3d.FileProcessing.Reader;
 using FileTranslator3d.FileProcessing.Writer;
@@ -27,10 +29,17 @@ namespace FileTranslator3d
         /// <param name="inputFormat"></param>
         public void ReadFile(string inputFile, string inputFormat)
         {
-            //Read the input file
-            IFileReaderFactory readerFactory = new FileReaderFactory();
-            var reader = readerFactory.GetFileReader(GetFileTypeEnum(inputFormat));
-            _geometry = reader.ReadFile(inputFile);
+            try
+            {
+                //Read the input file
+                IFileReaderFactory readerFactory = new FileReaderFactory();
+                var reader = readerFactory.GetFileReader(GetFileTypeEnum(inputFormat));
+                _geometry = reader.ReadFile(inputFile);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("ReadFile: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -40,10 +49,18 @@ namespace FileTranslator3d
         /// <param name="outputFormat"></param>
         public void WriteFile(string outputFile, string outputFormat)
         {
-            //Write the output file
-            IFileWriterFactory writerFactory = new FileWriterFactory();
-            var writer = writerFactory.GetFileWriter(GetFileTypeEnum(outputFormat));
-            writer.Write(_geometry, outputFile);
+            try
+            {
+                //Write the output file
+                IFileWriterFactory writerFactory = new FileWriterFactory();
+                var writer = writerFactory.GetFileWriter(GetFileTypeEnum(outputFormat));
+                writer.Write(_geometry, outputFile);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("WriteFile: " + ex.Message);
+            }
+
         }
 
         /// <summary>
@@ -52,7 +69,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public double GetSurfaceArea()
         {
-            return _geometry.GetSurfaceArea();
+            try
+            {
+                return _geometry.GetSurfaceArea();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("GetSurfaceArea: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -61,7 +85,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public double GetSurfaceVolume()
         {
-            return _geometry.GetSurfaceVolume();
+            try
+            {
+                return _geometry.GetSurfaceVolume();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("GetSurfaceVolume: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -74,7 +105,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public bool Translate(float x, float y, float z)
         {
-            return _geometry.Translate(new Vector3(0, 0, 0), new Vector3(x, y, z));
+            try
+            {
+                return _geometry.Translate(new Vector3(0, 0, 0), new Vector3(x, y, z));
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Translate: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -84,7 +122,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public bool Scale(float factor)
         {
-            return _geometry.Scale(factor);
+            try
+            {
+                return _geometry.Scale(factor);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Scale: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -94,7 +139,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public bool IsPointInside(Vector3 point)
         {
-            return _geometry.IsPointInside(point);
+            try
+            {
+                return _geometry.IsPointInside(point);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("IsPointInside: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -102,7 +154,14 @@ namespace FileTranslator3d
         /// </summary>
         public void AddOrigin()
         {
-            _geometry.AddOrigin();
+            try
+            {
+                _geometry.AddOrigin();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("AddOrigin: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -113,7 +172,14 @@ namespace FileTranslator3d
         /// <returns></returns>
         public bool Rotate(RotationAxis axis, double angle)
         {
-            return _geometry.Rotate(axis, angle);
+            try
+            {
+                return _geometry.Rotate(axis, angle);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Rotate: " + ex.Message);
+            }
         }
 
         #endregion
