@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileTranslator3d.API</name>
+    </assembly>
+    <members>
+        <member name="T:FileTranslator3d.API.Controllers.FileTranslatorController">
+            <summary>
+            API controller class 
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.#ctor(FileTranslator3d.IFileTranslatorFacade,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            Constructor - initializes the translator and environment
+            </summary>
+            <param name="fileTranslator"></param>
+            <param name="environment"></param>
+        </member>
+        <member name="P:FileTranslator3d.API.Controllers.FileTranslatorController.FileDetails">
+            <summary>
+            File Argument options - for file name and type of file
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.UploadFile">
+            <summary>
+            Uploads the file to server
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.DownloadFile(System.String)">
+            <summary>
+            Download the file after conversion
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.TranslateFile(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            api to convert the file in the given format 
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.IsPointInside(FileTranslator3d.Models.PointStateModel)">
+            <summary>
+            Api to check if the given point is inside or outside the 3d surface
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.API.Controllers.FileTranslatorController.Transform(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            Api to move geometry to the specified point - base point is center
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.API.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.API.Program.Main(System.String[])">
+            <summary>
+            Initializes the host
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:FileTranslator3d.API.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Creates the host builder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.API.Startup">
+            <summary>
+            Start up class
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.API.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:FileTranslator3d.API.Startup.Configuration">
+            <summary>
+            Configuration settings
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:FileTranslator3d.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

@@ -272,47 +272,42 @@
             <param name="angle"></param>
             <returns></returns>
         </member>
-        <member name="M:FileTranslator3d.FileTranslatorFacade.CleanupGeometry">
-            <summary>
-            Sets the geometry to null - mainly used for unit testing
-            </summary>
-        </member>
         <member name="T:FileTranslator3d.Geometry.BrepGeometry">
             <summary>
-                Represents 3d geometry model which can be used across all file formats
+            Represents 3d geometry model which can be used across all file formats
             </summary>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.#ctor">
             <summary>
-                Constructor
+            Constructor
             </summary>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.#ctor(System.Collections.Generic.List{FileTranslator3d.Geometry.Triangle})">
             <summary>
-                Constructor which take triangle as argument
+            Constructor which take triangle as argument
             </summary>
             <param name="triangles"></param>
         </member>
         <member name="P:FileTranslator3d.Geometry.BrepGeometry.Triangles">
             <summary>
-                Array of triangles geometry has
+            Array of triangles geometry has
             </summary>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.GetSurfaceArea">
             <summary>
-                Returns the surface area  - sum of area of all triangles
+            Returns the surface area  - sum of area of all triangles
             </summary>
             <returns></returns>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.GetSurfaceVolume">
             <summary>
-                Returns the surface volume
+            Returns the surface volume 
             </summary>
             <returns></returns>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.Translate(System.Numerics.Vector3,System.Numerics.Vector3)">
             <summary>
-                Translates/Moves the geometry from one point to another
+            Translates/Moves the geometry from one point to another
             </summary>
             <param name="fromPoint"></param>
             <param name="toPoint"></param>
@@ -320,7 +315,7 @@
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.Scale(System.Single,System.Single,System.Single,System.Single)">
             <summary>
-                Scales the geometry - default is 1
+            Scales the geometry - default is 1
             </summary>
             <param name="sf"></param>
             <param name="xf"></param>
@@ -330,7 +325,7 @@
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.Rotate(FileTranslator3d.Utility.RotationAxis,System.Double)">
             <summary>
-                Rotates the entire geometry to a specified angle with respect to the axis
+            Rotates the entire geometry to a specified angle with respect to the axis
             </summary>
             <param name="axis"></param>
             <param name="angle"></param>
@@ -338,13 +333,12 @@
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.AddOrigin">
             <summary>
-                The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+            The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
             </summary>
         </member>
         <member name="M:FileTranslator3d.Geometry.BrepGeometry.IsPointInside(System.Numerics.Vector3)">
             <summary>
-                Returns true if the given point is inside the convex geometry.
-                ref:https://www.youtube.com/watch?v=qBo5oVFqnPc
+            Returns true if the given point is inside the convex geometry.
             </summary>
             <param name="point"></param>
             <returns></returns>
@@ -467,6 +461,7 @@
         <member name="T:FileTranslator3d.Geometry.Plane">
             <summary>
             Plane class - for calculating the face to point distance
+            ref : https://www.codeproject.com/Articles/1065730/Point-Inside-Convex-Polygon-in-Cplusplus#:~:text=A%20point%20is%20determined%20to,basic%20idea%20of%20this%20algorithm.
             </summary>
         </member>
         <member name="M:FileTranslator3d.Geometry.Plane.#ctor(FileTranslator3d.Geometry.Triangle)">
@@ -507,6 +502,14 @@
             <summary>
             This is for writing the stl binary format
             </summary>
+        </member>
+        <member name="M:FileTranslator3d.Geometry.Triangle.Translate(System.Numerics.Vector3,System.Numerics.Vector3)">
+            <summary>
+            Translates the triangle from one point to another
+            </summary>
+            <param name="fromPoint"></param>
+            <param name="toPoint"></param>
+            <returns></returns>
         </member>
         <member name="M:FileTranslator3d.Geometry.Triangle.GetArea">
             <summary>
@@ -596,11 +599,6 @@
             The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
             </summary>
         </member>
-        <member name="M:FileTranslator3d.IFileTranslatorFacade.CleanupGeometry">
-            <summary>
-            Sets the geometry to null - mainly used for unit testing
-            </summary>
-        </member>
         <member name="T:FileTranslator3d.Utility.FileType">
             <summary>
             Type of file to be converted
@@ -645,6 +643,18 @@
             <summary>
             With respect to z axis
             </summary>
+        </member>
+        <member name="T:FileTranslator3d.Utility.Extensions">
+            <summary>
+            Extenstion class for the vector
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Utility.Extensions.Magnitude(System.Numerics.Vector3)">
+            <summary>
+            Returns the magnitude of the vector
+            </summary>
+            <param name="vec"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

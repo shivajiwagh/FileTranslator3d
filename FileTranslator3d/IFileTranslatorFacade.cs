@@ -72,6 +72,12 @@ namespace FileTranslator3d
         /// </summary>
         void AddOrigin();
 
+
+        /// <summary>
+        /// Sets the geometry to null - mainly used for unit testing
+        /// </summary>
+        void CleanupGeometry();
+
         #endregion
     }
 }

@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileTranslator3d.Web</name>
+    </assembly>
+    <members>
+        <member name="T:FileTranslator3d.Web.Program">
+            <summary>
+            Program - class
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Web.Program.Main(System.String[])">
+            <summary>
+            Entry point
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:FileTranslator3d.Web.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            Creates the host builder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Web.Services.ITranslatorApiService">
+            <summary>
+            Interface for calling the rest apis
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.UploadFile(System.Net.Http.HttpContent)">
+            <summary>
+            Uploads the file to server
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.TranslateFile(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            Converts the model -  main api
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.DownloadFile(System.String)">
+            <summary>
+            Returns the download url
+            </summary>
+            <param name="filepath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.Transform(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            Model transformation api
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.IsPointInside(FileTranslator3d.Models.PointStateModel)">
+            <summary>
+            Api to check if the point is inside or outside
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.ITranslatorApiService.GetDownloadUrl(System.String)">
+            <summary>
+            Function returns the download url
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Web.Services.TranslatorApiService">
+            <summary>
+            Concrete implementation of the api service caller
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.#ctor(System.Net.Http.HttpClient)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="httpClient"></param>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.UploadFile(System.Net.Http.HttpContent)">
+            <summary>
+            Uploads the file to server
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.TranslateFile(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            Converts the model -  main api
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.DownloadFile(System.String)">
+            <summary>
+            Returns the download url
+            </summary>
+            <param name="filepath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.Transform(FileTranslator3d.Models.TransformationModel)">
+            <summary>
+            Model transformation api
+            </summary>
+            <param name="transformation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.IsPointInside(FileTranslator3d.Models.PointStateModel)">
+            <summary>
+            Api to check if the point is inside or outside
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FileTranslator3d.Web.Services.TranslatorApiService.GetDownloadUrl(System.String)">
+            <summary>
+            Function returns the download url
+            </summary>
+            <param name="filename"></param>
+            <returns></returns>
+        </member>
+        <member name="T:FileTranslator3d.Web.Startup">
+            <summary>
+            Startup class
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Web.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:FileTranslator3d.Web.Startup.Configuration">
+            <summary>
+            Stores the configuration information
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Web.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:FileTranslator3d.Web.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:FileTranslator3d.Web.Pages.TranslatorComponent.OnSelectFile(BlazorInputFile.IFileListEntry[])">
+            <summary>
+                Ref: https://www.mikesdotnetting.com/article/341/uploading-files-in-blazor
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

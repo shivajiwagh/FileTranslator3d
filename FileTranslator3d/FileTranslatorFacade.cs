@@ -182,6 +182,15 @@ namespace FileTranslator3d
             }
         }
 
+
+        /// <summary>
+        /// Sets the geometry to null - mainly used for unit testing
+        /// </summary>
+        public void CleanupGeometry()
+        {
+            _geometry = null;
+        }
+
         #endregion
 
         #region Member Functions

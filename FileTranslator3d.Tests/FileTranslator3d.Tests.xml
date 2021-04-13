@@ -40,5 +40,20 @@
             Another obj file format
             </summary>
         </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.TestReadException">
+            <summary>
+            Exception while reading the file - invalid file name
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.NullGeometryExceptionVolume">
+            <summary>
+            Exception while calculating the volume
+            </summary>
+        </member>
+        <member name="M:FileTranslator3d.Tests.FileTranslatorTest.NullGeometryExceptionArea">
+            <summary>
+            Exception while calculating the area
+            </summary>
+        </member>
     </members>
 </doc>

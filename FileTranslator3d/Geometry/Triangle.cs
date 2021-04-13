@@ -45,18 +45,6 @@ namespace FileTranslator3d.Geometry
         #endregion
 
         #region Member Functions
-        /// <summary>
-        /// Translates the triangle from one point to another
-        /// </summary>
-        /// <param name="fromPoint"></param>
-        /// <param name="toPoint"></param>
-        /// <returns></returns>
-        public bool Translate(Vector3 fromPoint, Vector3 toPoint)
-        {
-            var resultant = fromPoint - toPoint;
-            for (var i = 0; i < Points.Count; i++) Points[i] = Points[i] + resultant;
-            return true;
-        }
 
         /// <summary>
         /// Returns the area of the triangle

@@ -4,7 +4,6 @@ namespace FileTranslator3d.Geometry
 {
     /// <summary>
     /// Plane class - for calculating the face to point distance
-    /// ref : https://www.codeproject.com/Articles/1065730/Point-Inside-Convex-Polygon-in-Cplusplus#:~:text=A%20point%20is%20determined%20to,basic%20idea%20of%20this%20algorithm.
     /// </summary>
     public class Plane
     {

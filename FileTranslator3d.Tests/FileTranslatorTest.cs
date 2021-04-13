@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Numerics;
 using System.Reflection;
@@ -52,7 +53,7 @@ namespace FileTranslator3d.Tests
             Assert.AreEqual(stateY, true);
             var stateZ = _fileTranslator.Rotate(RotationAxis.Z, 90);
             Assert.AreEqual(stateZ, true);
-            var transform = _fileTranslator.Translate(5, 5, 5);
+            var transform = _fileTranslator.Translate(5, 5, 0);
             Assert.AreEqual(transform, true);
 
             _fileTranslator.AddOrigin();
@@ -146,6 +147,63 @@ namespace FileTranslator3d.Tests
             }
 
             return directory;
+        }
+
+        /// <summary>
+        /// Exception while reading the file - invalid file name
+        /// </summary>
+        [TestMethod]
+        public void TestReadException()
+        {
+            try
+            {
+                var filePath = Path.Combine(GetInputFolderPath(), "nofile.obj");
+                _fileTranslator.ReadFile(filePath, "obj");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex is IOException);
+            }
+        }
+
+        /// <summary>
+        /// Exception while calculating the volume
+        /// </summary>
+        [TestMethod]
+        public void NullGeometryExceptionVolume()
+        {
+            try
+            {
+                var filePath = Path.Combine(GetInputFolderPath(), "capsule.obj");
+                _fileTranslator.ReadFile(filePath, "obj");
+
+                _fileTranslator.CleanupGeometry();
+                _fileTranslator.GetSurfaceVolume();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex is InvalidOperationException);
+            }
+        }
+
+        /// <summary>
+        /// Exception while calculating the area
+        /// </summary>
+        [TestMethod]
+        public void NullGeometryExceptionArea()
+        {
+            try
+            {
+                var filePath = Path.Combine(GetInputFolderPath(), "capsule.obj");
+                _fileTranslator.ReadFile(filePath, "obj");
+
+                _fileTranslator.CleanupGeometry();
+                _fileTranslator.GetSurfaceArea();
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex is InvalidOperationException);
+            }
         }
 
         #endregion

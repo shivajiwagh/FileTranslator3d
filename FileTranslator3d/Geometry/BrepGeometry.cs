@@ -6,14 +6,14 @@ using FileTranslator3d.Utility;
 namespace FileTranslator3d.Geometry
 {
     /// <summary>
-    /// Represents 3d geometry model which can be used across all file formats
+    ///     Represents 3d geometry model which can be used across all file formats
     /// </summary>
     public class BrepGeometry : IPrimitive
     {
         #region Constructor
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         public BrepGeometry()
         {
@@ -21,7 +21,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Constructor which take triangle as argument
+        ///     Constructor which take triangle as argument
         /// </summary>
         /// <param name="triangles"></param>
         public BrepGeometry(List<Triangle> triangles)
@@ -34,7 +34,7 @@ namespace FileTranslator3d.Geometry
         #region Properties
 
         /// <summary>
-        /// Array of triangles geometry has
+        ///     Array of triangles geometry has
         /// </summary>
         public List<Triangle> Triangles { get; set; }
 
@@ -43,7 +43,7 @@ namespace FileTranslator3d.Geometry
         #region Interface Implementations
 
         /// <summary>
-        /// Returns the surface area  - sum of area of all triangles
+        ///     Returns the surface area  - sum of area of all triangles
         /// </summary>
         /// <returns></returns>
         public double GetSurfaceArea()
@@ -54,7 +54,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Returns the surface volume 
+        ///     Returns the surface volume
         /// </summary>
         /// <returns></returns>
         public double GetSurfaceVolume()
@@ -65,7 +65,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Translates/Moves the geometry from one point to another
+        ///     Translates/Moves the geometry from one point to another
         /// </summary>
         /// <param name="fromPoint"></param>
         /// <param name="toPoint"></param>
@@ -82,7 +82,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Scales the geometry - default is 1
+        ///     Scales the geometry - default is 1
         /// </summary>
         /// <param name="sf"></param>
         /// <param name="xf"></param>
@@ -103,7 +103,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Rotates the entire geometry to a specified angle with respect to the axis
+        ///     Rotates the entire geometry to a specified angle with respect to the axis
         /// </summary>
         /// <param name="axis"></param>
         /// <param name="angle"></param>
@@ -133,7 +133,7 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
+        ///     The is just for reference purpose - Just to check if it is scaling or not - adds a triangle
         /// </summary>
         public void AddOrigin()
         {
@@ -148,26 +148,63 @@ namespace FileTranslator3d.Geometry
         }
 
         /// <summary>
-        /// Returns true if the given point is inside the convex geometry.
+        ///     Returns true if the given point is inside the convex geometry.
+        ///     ref:https://www.youtube.com/watch?v=qBo5oVFqnPc
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
         public bool IsPointInside(Vector3 point)
         {
+            var tolerance = 1e-6;
+            double totalAngle = 0;
             foreach (var triangle in Triangles)
             {
-                var plane = new Plane(triangle);
-                var dist = point * plane;
-                if (dist > 0)
-                    return false;
+                var ptA = triangle.Points[0];
+                var ptB = triangle.Points[1];
+                var ptC = triangle.Points[2];
+
+                var a = point - ptA;
+                var b = point - ptB;
+                var c = point - ptC;
+
+                var angle = GetSolidAngle(a, b, c);
+                var center = GetCentroid(ptA, ptB, ptC);
+
+                var faceVector = center - point;
+
+                var dot = Vector3.Dot(triangle.Normal, faceVector);
+                double factor = dot > 0 ? 1 : -1;
+
+                totalAngle += angle * factor;
             }
 
-            return true;
+            var absTotal = Math.Abs(totalAngle);
+            var inside = Math.Abs(absTotal - 4 * Math.PI) < tolerance;
+            return inside;
         }
 
         #endregion
 
         #region Member Functions
+
+        private Vector3 GetCentroid(Vector3 p, Vector3 q, Vector3 r)
+        {
+            var sum = Vector3.Add(Vector3.Add(p, q), r);
+            return Vector3.Multiply(sum, 1 / 3.0f);
+        }
+
+        private double GetSolidAngle(Vector3 a, Vector3 b, Vector3 c)
+        {
+            a = Vector3.Normalize(a);
+            b = Vector3.Normalize(b);
+            c = Vector3.Normalize(c);
+
+            var numerator = Vector3.Dot(Vector3.Cross(a, b), c);
+            var denominator = 1.0f + Vector3.Dot(a, b) + Vector3.Dot(b, c) + Vector3.Dot(c, a);
+
+            var angle = 2 * Math.Atan2(numerator, denominator);
+            return Math.Abs(angle);
+        }
 
         private Vector3 RotatePointAboutX(Vector3 point, double angle)
         {
@@ -196,8 +233,8 @@ namespace FileTranslator3d.Geometry
             var retPoint = new Vector3
             {
                 Z = point.Z,
-                X = (float)(point.X * Math.Cos(angle) - point.Y * Math.Sin(angle)),
-                Y = (float)(point.X * Math.Sin(angle) + point.Y * Math.Cos(angle))
+                X = (float) (point.X * Math.Cos(angle) - point.Y * Math.Sin(angle)),
+                Y = (float) (point.X * Math.Sin(angle) + point.Y * Math.Cos(angle))
             };
             return retPoint;
         }
