@@ -11,7 +11,7 @@
         </member>
         <member name="M:FileTranslator3d.FileProcessing.FileStructure.IFileModel.GetGeometryModel">
             <summary>
-            Returns the generic geometry model structure so that it can be reused across all formats
+            Returns the generic geometry model structure so that it can be reused across all formats.
             </summary>
             <returns></returns>
         </member>
