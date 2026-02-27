@@ -27,13 +27,13 @@
         </member>
         <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Vertices">
             <summary>
-            Holds the vertices - Vector3 class represents a point
+            Holds the vertices - Vector3 class represents a point.
             v element in Obj file.
             </summary>
         </member>
         <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Faces">
             <summary>
-            f element - face in obj file
+            f element - face in obj file.
             </summary>
         </member>
         <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Normals">
