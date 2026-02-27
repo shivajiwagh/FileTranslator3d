@@ -17,7 +17,7 @@
         </member>
         <member name="T:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel">
             <summary>
-            Concrete implementation of IFileModel
+            Concrete implementation of IFileModel.
             </summary>
         </member>
         <member name="M:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.#ctor">
@@ -28,7 +28,7 @@
         <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Vertices">
             <summary>
             Holds the vertices - Vector3 class represents a point
-            v element in Obj file
+            v element in Obj file.
             </summary>
         </member>
         <member name="P:FileTranslator3d.FileProcessing.FileStructure.ObjectFileModel.Faces">
