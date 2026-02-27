@@ -6,7 +6,7 @@
     <members>
         <member name="T:FileTranslator3d.FileProcessing.FileStructure.IFileModel">
             <summary>
-            For inheritance purpose only
+            For inheritance purpose only.
             </summary>
         </member>
         <member name="M:FileTranslator3d.FileProcessing.FileStructure.IFileModel.GetGeometryModel">
